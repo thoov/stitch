@@ -1,0 +1,46 @@
+Arguments: 
+  /Users/thoover/.volta/tools/image/node/14.15.1/bin/node /Users/thoover/.volta/tools/image/yarn/1.22.10/bin/yarn.js add checkupjs
+
+PATH: 
+  /Users/thoover/.volta/tools/image/yarn/1.22.10/bin:/Users/thoover/.volta/tools/image/node/14.15.1/bin:/Users/thoover/.volta/bin:/Users/thoover/code/bin:/Users/thoover/.yarn/bin:/Users/thoover/.config/yarn/global/node_modules/.bin:/Users/thoover/.cargo/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/linkedin/bin:/export/content/linkedin/bin:/export/content/granular/bin:/Library/Apple/usr/bin:/Users/thoover/.volta/bin:/Users/thoover/code/bin:/Users/thoover/.yarn/bin:/Users/thoover/.config/yarn/global/node_modules/.bin:/Users/thoover/.cargo/bin:/usr/local/opt/fzf/bin
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  14.15.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/checkupjs: Not found
+      at Request.params.callback [as _callback] (/Users/thoover/.volta/tools/image/yarn/1.22.10/lib/cli.js:66988:18)
+      at Request.self.callback (/Users/thoover/.volta/tools/image/yarn/1.22.10/lib/cli.js:140662:22)
+      at Request.emit (events.js:315:20)
+      at Request.<anonymous> (/Users/thoover/.volta/tools/image/yarn/1.22.10/lib/cli.js:141634:10)
+      at Request.emit (events.js:315:20)
+      at IncomingMessage.<anonymous> (/Users/thoover/.volta/tools/image/yarn/1.22.10/lib/cli.js:141556:12)
+      at Object.onceWrapper (events.js:421:28)
+      at IncomingMessage.emit (events.js:327:22)
+      at endReadableNT (_stream_readable.js:1327:12)
+      at processTicksAndRejections (internal/process/task_queues.js:80:21)
+
+npm manifest: 
+  {
+    "name": "cli",
+    "bin": {
+      "cli": "./bin/cli"
+    },
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "git@github.com:thoov/cli.git",
+    "author": "Travis Hoover <thoov7@gmail.com>",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

@@ -1,0 +1,14 @@
+{
+  "name": "cli",
+  "bin": {
+    "cli": "./bin/cli"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:thoov/cli.git",
+  "author": "Travis Hoover <thoov7@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@checkup/cli": "^0.13.3"
+  }
+}
