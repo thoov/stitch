@@ -9,12 +9,12 @@ Embroider can run some initial checks to determine if your project is currently 
 
 ```shell
 # Runs the Embroider preflight checks
-npx cli preflight
+npx stitch preflight
 ```
 
 Embroider can additionally run some migrations for you to onboard you faster.
 
 ```shell
 # Runs the Embroider migrations
-npx cli migrate
+npx stitch migrate
 ```
