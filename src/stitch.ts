@@ -6,6 +6,7 @@ export async function run(argv: string[] = process.argv.slice(2)): Promise<void>
     .usage(
       `
   A compatabilty and migration CLI for Embroider
+
   stitch <command> [options]`
     )
     .command({

@@ -13,6 +13,25 @@ describe('cli-test', () => {
     project.dispose();
   });
 
+  it('displays help when no commmand is provided', async () => {
+    const result = await run([]);
+
+    expect(result.exitCode).toEqual(0);
+    expect(result.stderr).toMatchInlineSnapshot(`
+      "
+           A compatabilty and migration CLI for Embroider
+           stitch <command> [options]
+
+      Commands:
+        stitch preflight  Runs an Embroider preflight check  [aliases: p]
+        stitch migrate    Runs an Embroider migration  [aliases: m]
+
+      Options:
+        --help     Show help  [boolean]
+        --version  Show version number  [boolean]"
+    `);
+  });
+
   it('can invoke the preflight command', async () => {
     const result = await run(['preflight']);
 
