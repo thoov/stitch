@@ -1,7 +1,7 @@
 {
   "name": "cli",
   "bin": {
-    "embroider-cli": "./bin/embroider-cli"
+    "stitch": "./bin/stitch"
   },
   "version": "0.0.1",
   "main": "lib/index.js",

@@ -1,6 +1,7 @@
-# cli (soon to be embroider-cli)
+# stitch
 
-A CLI to assist in the migration to the Embroider build system.
+A CLI to assist in the migration to the Embroider build system. Stitch will help you bring
+the pieces of Embroider together to ensure your project can move to it successfully.
 
 ## Usage
 

@@ -37,7 +37,7 @@ describe('cli-test', () => {
 
     return execa(
       process.execPath,
-      [require.resolve('../bin/embroider-cli.js'), ...args],
+      [require.resolve('../bin/stitch.js'), ...args],
       Object.assign({}, defaults, options)
     );
   }
