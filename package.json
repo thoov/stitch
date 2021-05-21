@@ -1,15 +1,17 @@
 {
   "name": "cli",
   "bin": {
-    "embroider": "./bin/embroider-cli"
+    "embroider-cli": "./bin/embroider-cli"
   },
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "repository": "git@github.com:thoov/cli.git",
   "author": "Travis Hoover <thoov7@gmail.com>",
   "license": "MIT",
   "scripts": {
     "build": "tsc --build",
+    "lint": "eslint . --cache --ext .ts",
     "prepare": "yarn build",
     "test": "jest --runInBand"
   },
@@ -22,10 +24,14 @@
   ],
   "dependencies": {
     "@checkup/cli": "^1.0.0-beta.10",
+    "@checkup/core": "^1.0.0-beta.10",
     "v8-compile-cache": "^2.3.0",
     "yargs": "^16.2.0"
   },
   "devDependencies": {
+    "@checkup/plugin": "^1.0.0-beta.10",
+    "@checkup/test-helpers": "^1.0.0-beta.10",
+    "@types/debug": "^4.1.5",
     "@types/jest": "^26.0.23",
     "@types/yargs": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.24.0",
