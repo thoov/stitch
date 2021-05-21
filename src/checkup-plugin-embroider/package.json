@@ -1,0 +1,12 @@
+{
+  "name": "checkup-plugin-embroider",
+  "description": "",
+  "version": "0.0.1",
+  "dependencies": {
+    "@checkup/core": "^1.0.0-beta.10"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "checkup-plugin"
+  ]
+}
