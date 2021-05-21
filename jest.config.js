@@ -7,7 +7,6 @@ module.exports = {
   coverageReporters: ['lcov', 'text-summary'],
   collectCoverage: !!process.env.CI,
   collectCoverageFrom: ['src/**/*.ts'],
-  coveragePathIgnorePatterns: ['/templates/'],
   coverageThreshold: {
     global: {
       branches: 100,
@@ -16,5 +15,6 @@ module.exports = {
       statements: 100,
     },
   },
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testPathIgnorePatterns: ['/__utils__/', '/__fixtures__/'],
 };
