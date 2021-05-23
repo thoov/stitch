@@ -2,6 +2,8 @@ import '@microsoft/jest-sarif';
 import execa from 'execa';
 import { Project } from 'fixturify-project';
 
+const ROOT = process.cwd();
+
 describe('cli-test', () => {
   let project: Project;
 
@@ -11,6 +13,7 @@ describe('cli-test', () => {
   });
 
   afterEach(function () {
+    process.chdir(ROOT);
     project.dispose();
   });
 
