@@ -5,5 +5,6 @@ module.exports = {
     '\\.ts$': 'ts-jest',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  modulePathIgnorePatterns: ['<rootDir>/lib']
   testPathIgnorePatterns: ['/__utils__/', '/__fixtures__/'],
 };
