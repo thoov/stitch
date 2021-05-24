@@ -16,6 +16,6 @@
       "*": ["./types/*"]
     }
   },
-  "include": ["./src", "./src/checkup-plugin-embroider/package.json"],
+  "include": ["./src/**/*", "./src/checkup-plugin-embroider/package.json"],
   "exclude": ["**/node_modules/**"]
 }

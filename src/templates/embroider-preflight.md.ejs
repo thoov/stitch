@@ -1,0 +1,16 @@
+# Embroider Preflight Report for <%= projectName %>
+
+## Preflight Check Results
+
+<% if (results.length > 0) { %>
+The following packages are not compatible with Embroider.
+<% results.forEach((result) => { %>
+### <%= result.packageName %>
+<details>
+  <summary>Package paths</summary>
+  <%= result.packageBreadcrumb.join(' > ') %>
+</details>
+<% }); %>
+<% } else { %>
+All packages are compatible!
+<% } %>
