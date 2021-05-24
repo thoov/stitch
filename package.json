@@ -1,7 +1,7 @@
 {
   "name": "cli",
   "version": "0.0.1",
-  "repository": "git@github.com:thoov/cli.git",
+  "repository": "git@github.com:thoov/stitch.git",
   "license": "MIT",
   "author": "Travis Hoover <thoov7@gmail.com>",
   "main": "lib/index.js",
