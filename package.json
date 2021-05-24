@@ -14,7 +14,8 @@
     "/lib"
   ],
   "scripts": {
-    "build": "tsc --build",
+    "build": "tsc --build && yarn copy-files",
+    "copy-files": "cp -R ./src/templates ./lib",
     "lint": "eslint . --cache --ext .ts",
     "prepare": "yarn build",
     "test": "jest --runInBand"
@@ -25,6 +26,7 @@
   "dependencies": {
     "@checkup/cli": "^1.0.0-beta.11",
     "@checkup/core": "^1.0.0-beta.11",
+    "ejs": "^3.1.6",
     "ora": "^5.4.0",
     "v8-compile-cache": "^2.3.0",
     "yargs": "^16.2.0"
@@ -35,6 +37,8 @@
     "@microsoft/jest-sarif": "^1.0.0-beta.0",
     "@types/debug": "^4.1.5",
     "@types/jest": "^26.0.23",
+    "@types/sarif": "^2.1.3",
+    "@types/tmp": "^0.2.0",
     "@types/yargs": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.24.0",
     "@typescript-eslint/parser": "^4.24.0",
@@ -52,6 +56,7 @@
     "prettier": "^2.3.0",
     "release-it": "^14.2.1",
     "release-it-lerna-changelog": "^3.1.0",
+    "tmp": "^0.2.1",
     "ts-jest": "^26.5.6",
     "typescript": "^4.2.4"
   },
