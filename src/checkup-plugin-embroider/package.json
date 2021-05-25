@@ -3,7 +3,9 @@
   "description": "",
   "version": "0.0.1",
   "dependencies": {
-    "@checkup/core": "^1.0.0-beta.10"
+    "@checkup/core": "^1.0.0-beta.10",
+    "@npmcli/arborist": "^2.6.0",
+    "semver": "^7.3.5"
   },
   "devDependencies": {},
   "keywords": [
