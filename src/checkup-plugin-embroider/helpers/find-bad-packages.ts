@@ -1,4 +1,4 @@
-import Arborist from '@npmcli/arborist';
+import Arborist, { ArboristNode } from '@npmcli/arborist';
 import semver from 'semver';
 
 interface PackageCheck {
@@ -15,14 +15,14 @@ export default async function (root: string, packagesToCheck: PackageCheck): Pro
   const arb = new Arborist({ path: root });
   const tree = await arb.loadActual();
   const badPackages = new Set<StitchResult>();
-  const seen = new Set<any>();
+  const seen = new Set<ArboristNode>();
 
   // this is recursive
   traverseDependencies(tree, packagesToCheck, badPackages, seen);
   return [...badPackages];
 }
 
-function traverseDependencies(node: any, packagesToCheck: PackageCheck, results: Set<StitchResult>, seen: Set<any>) {
+function traverseDependencies(node: ArboristNode, packagesToCheck: PackageCheck, results: Set<StitchResult>, seen: Set<ArboristNode>) {
   // this is a package with no dependencies so we have reacted the bottom of the recursive stack
   if (node.edgesOut.size === 0) {
     return;
@@ -54,8 +54,8 @@ function traverseDependencies(node: any, packagesToCheck: PackageCheck, results:
   }
 }
 
-function createBreadcrumb(node: any): string[] {
-  const breadcrumbs: string[] = [node.packageName];
+function createBreadcrumb(node: ArboristNode) {
+  const breadcrumbs = [node.packageName];
 
   let parent = node.parent;
   while (parent !== null) {
