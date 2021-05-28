@@ -1,7 +1,7 @@
 import { Project } from 'fixturify-project';
 import findBadPackages from '../src/checkup-plugin-embroider/helpers/find-bad-packages';
 
-describe('markdown-formatter-test', () => {
+describe('dependency-compatibility-test', () => {
   let project: Project;
 
   beforeEach(function () {
