@@ -1,0 +1,7 @@
+{
+  "@ember/test-waiters": ">=2.4.2",
+  "ember-classic-decorator": ">=2.0.0",
+  "ember-cli-fastboot": ">=2.2.3",
+  "ember-holy-futuristic-template-namespacing-batman": ">=1.1.0",
+  "ember-math-helpers": ">=2.14.0"
+}
