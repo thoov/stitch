@@ -42,4 +42,58 @@ describe('markdown-formatter-test', () => {
       packageBreadcrumb: ['fake-project']
     }]);
   });
+
+  it('with deeply nested addons the breadcrumb is correct', async () => {
+    const foo = project.addDependency('foo', '1.0.0');
+    const bar = project.addDependency('bar', '1.0.0');
+    project.addDependency('target', '1.0.0');
+    foo.addDependency('target', '1.0.0');
+    const nested = bar.addDependency('nested', '1.0.0');
+    nested.addDependency('target', '1.0.0');
+    project.writeSync();
+
+    const packageCompatibilityJSON = {
+      'target': '>=2.0.0'
+    };
+
+    const pkgsFound = await findBadPackages(project.baseDir, packageCompatibilityJSON);
+    expect(pkgsFound).toStrictEqual([{
+      packageName: 'target',
+      packageVersion: '1.0.0',
+      packageBreadcrumb: ['fake-project', 'foo']
+    }, {
+      packageName: 'target',
+      packageVersion: '1.0.0',
+      packageBreadcrumb: ['fake-project', 'bar', 'nested']
+    }, {
+      packageName: 'target',
+      packageVersion: '1.0.0',
+      packageBreadcrumb: ['fake-project']
+    }]);
+  });
+
+  it('only packages with versions that do not satisfy semver get returned', async () => {
+    const foo = project.addDependency('foo', '1.0.0');
+    const bar = project.addDependency('bar', '1.0.0');
+    project.addDependency('target', '1.0.0');
+    foo.addDependency('target', '2.0.0');
+    const nested = bar.addDependency('nested', '1.0.0');
+    nested.addDependency('target', '1.0.0');
+    project.writeSync();
+
+    const packageCompatibilityJSON = {
+      'target': '>=2.0.0'
+    };
+
+    const pkgsFound = await findBadPackages(project.baseDir, packageCompatibilityJSON);
+    expect(pkgsFound).toStrictEqual([{
+      packageName: 'target',
+      packageVersion: '1.0.0',
+      packageBreadcrumb: ['fake-project', 'bar', 'nested']
+    }, {
+      packageName: 'target',
+      packageVersion: '1.0.0',
+      packageBreadcrumb: ['fake-project']
+    }]);
+  });
 });
