@@ -1,6 +1,9 @@
 {
   "name": "cli",
   "version": "0.0.1",
+  "keywords": [
+    "codemod-cli"
+  ],
   "repository": "git@github.com:thoov/stitch.git",
   "license": "MIT",
   "author": "Travis Hoover <thoov7@gmail.com>",
@@ -15,7 +18,7 @@
   ],
   "scripts": {
     "build": "tsc --build && yarn copy-files",
-    "copy-files": "cp -R ./src/templates ./lib",
+    "copy-files": "cp -R ./src/templates ./lib && cp -R src/codemods ./lib",
     "lint": "eslint . --cache --ext .ts",
     "prepare": "yarn build",
     "test": "jest --runInBand"
@@ -27,6 +30,7 @@
     "@checkup/cli": "^1.0.0-beta.11",
     "@checkup/core": "^1.0.0-beta.11",
     "@npmcli/arborist": "^2.6.0",
+    "codemod-cli": "^3.2.0",
     "ejs": "^3.1.6",
     "ora": "^5.4.0",
     "semver": "^7.3.5",
