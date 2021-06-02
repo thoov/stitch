@@ -14,7 +14,6 @@ export default class DependencyCheck extends BaseTask implements Task {
   category = 'embroider';
 
   async run(): Promise<Result[]> {
-    debugger;
     const packageCompatibility: PackageCheck = packageCompatibilityJSON;
     const pkgs = await findBadPackages(this.context.options.cwd, packageCompatibility);
     const results = [];
