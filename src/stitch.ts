@@ -5,6 +5,7 @@ import * as yargs from 'yargs';
 
 interface StitchArguments {
   workingDirectory: string;
+  fooBar: string;
 }
 
 type Options = StitchArguments & yargs.Arguments;
@@ -34,6 +35,10 @@ export async function run(argv: string[] = process.argv.slice(2)): Promise<void>
             // are fairly deep)
             default: '.',
           },
+          'foo-bar': {
+            describe: 'An example of threading arguments through to tasks',
+            type: 'string',
+          },
         });
       },
       handler: async (options: Options) => {
@@ -46,10 +51,14 @@ export async function run(argv: string[] = process.argv.slice(2)): Promise<void>
           $schema: CONFIG_SCHEMA_URL,
           excludePaths: [],
           plugins: ['checkup-plugin-embroider'],
-          tasks: {},
+          tasks: {
+            'embroider/dependency-check': ['on', { fooBar: options.fooBar }],
+          },
         };
 
         const taskRunner = new CheckupTaskRunner({
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           config,
           cwd: options.workingDirectory,
           pluginBaseDir: __dirname,
