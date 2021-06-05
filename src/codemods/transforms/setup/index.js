@@ -9,15 +9,22 @@ module.exports = function transformer(file, api) {
   let returnStatments = root.find(j.ReturnStatement);
   let appToTreeCallExpression = root.find(j.CallExpression, {
     callee: {
-      object: {
-        name: 'app'
-      },
-
-      property: {
-        name: 'toTree'
-      }
+      object: { name: 'app' },
+      property: { name: 'toTree' }
     }
   });
+  let emberNew = root.find(j.NewExpression, {
+    callee: { name: 'EmberApp' }
+  });
+
+  let sourcemaps = false;
+  if (emberNew.nodes()[0].arguments[1]) {
+    emberNew.nodes()[0].arguments[1].properties.forEach(obj => {
+      if (obj.key.name === 'sourcemaps') {
+      	sourcemaps = true; // TODO: support {extensions: ['js', 'css']}
+      }
+    });
+  }
 
   // Comments might be attached to the return statement so we nned to save them
   // and reattach them after we apply the transform.
@@ -28,7 +35,7 @@ module.exports = function transformer(file, api) {
     extraTrees = appToTreeCallExpression.nodes()[0].arguments;
   }
 
-  returnStatments.replaceWith((path) => {
+  returnStatments.replaceWith(path => {
     // this checks if the return statement is `return app.toTree();`
     if (appToTreeCallExpression.nodes()[0] !== path.node.argument) {
       return path.node;
@@ -49,9 +56,7 @@ module.exports = function transformer(file, api) {
             j.identifier('require'), [j.stringLiteral('@embroider/webpack')])
         )
       ]),
-	  compatBuildStatement(j, extraTrees),
-
-
+	    compatBuildStatement(j, extraTrees, sourcemaps),
       j.returnStatement(j.identifier('tree'))
     ];
   });
@@ -82,27 +87,84 @@ module.exports = function transformer(file, api) {
   return root.toSource({quote: 'single'});
 }
 
-function compatBuildStatement(j, extraTrees) {
-  if (extraTrees.length > 0) {
-    return j.variableDeclaration('const', [
-      j.variableDeclarator(j.identifier('tree'), j.callExpression(j.memberExpression(
-        j.callExpression(j.identifier('require'), [j.literal('@embroider/compat')]),
-        j.identifier('compatBuild'),
-        false
-      ), [j.identifier('app'), j.identifier('Webpack'), j.objectExpression([
-        j.property('init', j.identifier('extraPublicTrees'), j.arrayExpression([]))
-      ])]))
-    ]);
-  }
+function compatBuildStatement(j, extraTrees, sourcemaps) {
+  const id = j.identifier;
+  const call = j.callExpression;
+  const lit = j.literal;
 
-  return j.variableDeclaration('const', [
-    j.variableDeclarator(j.identifier('tree'), j.callExpression(j.memberExpression(
-      j.callExpression(j.identifier('require'), [j.literal('@embroider/compat')]),
-      j.identifier('compatBuild'),
-      false
-    ), [j.identifier('app'), j.identifier('Webpack')]))
-  ]);
+
+  return j.variableDeclaration(
+    'const',
+    [
+      j.variableDeclarator(
+        id('tree'),
+        call(
+          j.memberExpression(
+            call(id('require'), [lit('@embroider/compat')]),
+            id('compatBuild'),
+            false
+          ),
+          compatBuildOptions(j, extraTrees, sourcemaps)
+        )
+      )
+    ]
+  );
 }
 
+function compatBuildOptions(j, extraTrees, sourcemaps) {
+  const id = j.identifier;
+  const obj = j.objectExpression;
+
+  if (extraTrees.length > 0 || sourcemaps) {
+  	return [
+  	  id('app'),
+      id('Webpack'),
+      obj(compatBuildThirdObject(j, extraTrees, sourcemaps))
+  	]
+  }
+
+  return [
+  	id('app'),
+    id('Webpack')
+  ]
+}
+
+function compatBuildThirdObject(j, extraTrees, sourcemaps) {
+  const id = j.identifier;
+  const prop = j.property;
+  const obj = j.objectExpression;
+  const arr = j.arrayExpression;
+  const objArr = [];
+
+  if (extraTrees.length > 0) {
+    objArr.push(prop('init', id('extraPublicTrees'), arr([])));
+  }
+
+  if (sourcemaps) {
+    objArr.push(prop('init', id('packagerOptions'), obj(packagerOptionsObject(j, sourcemaps))));
+  }
+
+  return objArr;
+}
+
+function packagerOptionsObject(j, sourcemaps) {
+  const id = j.identifier;
+  const prop = j.property;
+  const obj = j.objectExpression;
+
+  return [prop('init', id('webpackConfig'), obj(webpackConfigObject(j, sourcemaps)))];
+}
+
+function webpackConfigObject(j, sourcemaps) {
+  const id = j.identifier;
+  const prop = j.property;
+  const lit = j.literal;
+
+  if (sourcemaps) {
+	return [prop('init', id('devtool'), lit('eval-cheap-source-map'))];
+  }
+
+  return [];
+}
 
 module.exports.type = 'js';
