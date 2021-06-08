@@ -2,6 +2,10 @@ import { CheckupTaskRunner, getFormatter } from '@checkup/cli';
 import { CONFIG_SCHEMA_URL, OutputFormat } from '@checkup/core';
 import ora from 'ora';
 import * as yargs from 'yargs';
+import path from 'path';
+import fs from 'fs';
+import CodemodCLI from 'codemod-cli';
+import execa from 'execa';
 
 interface StitchArguments {
   workingDirectory: string;
@@ -82,6 +86,12 @@ export async function run(argv: string[] = process.argv.slice(2)): Promise<void>
             // are fairly deep)
             default: '.',
           },
+          'skip-dependencies': {
+            describe:
+              'Do not install dependencies.',
+            type: 'boolean',
+            default: false,
+          }
         });
       },
       handler: async (options: Options) => {
@@ -89,7 +99,35 @@ export async function run(argv: string[] = process.argv.slice(2)): Promise<void>
           options.workingDirectory = process.cwd();
         }
 
-        console.log('Migration commencing. Hold on to your hats.');
+        let packageManager = 'npm';
+
+        try {
+          if (fs.existsSync(path.join(options.workingDirectory, 'yarn.lock'))) {
+            console.log('Detected yarn.lock, using yarn to install dependencies');
+            packageManager = 'yarn';
+          }
+        } catch(error) { // eslint-disable-line unicorn/prefer-optional-catch-binding
+          console.log('Did not detect yarn.lock, using npm to install dependencies');
+        }
+
+        const installCommand = packageManager === 'yarn' ? 'add' : 'install';
+
+        try {
+          if (!options.skipDependencies) {
+            console.log('Installing dependencies...');
+            await execa(packageManager, [installCommand, '-D', '@embroider/core', '@embroider/compat', '@embroider/webpack']);
+          }
+
+          await CodemodCLI.runTransform(
+            path.join(__dirname, 'codemods', 'tranforms'),
+            'setup', /* transform name */
+            'ember-cli-build.js', /* paths or globs */
+            'js'
+          );
+        } catch (error) {
+          // TODO: do soomething in the error case
+          console.error(error.message);
+        }
       },
     })
     .showHelpOnFail(false)
