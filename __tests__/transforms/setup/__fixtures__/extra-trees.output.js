@@ -24,12 +24,10 @@ module.exports = function (defaults) {
   const bar = 'bar';
 
   const {
-    Webpack: Webpack
+    Webpack
   } = require('@embroider/webpack');
 
-  const tree = require('@embroider/compat').compatBuild(app, Webpack, {
+  return require('@embroider/compat').compatBuild(app, Webpack, {
     extraPublicTrees: [foo, bar]
   });
-
-  return tree;
 };

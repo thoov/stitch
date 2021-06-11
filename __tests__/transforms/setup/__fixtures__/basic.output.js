@@ -21,9 +21,8 @@ module.exports = function (defaults) {
   // along with the exports of each module as its value.
 
   const {
-    Webpack: Webpack
+    Webpack
   } = require('@embroider/webpack');
 
-  const tree = require('@embroider/compat').compatBuild(app, Webpack);
-  return tree;
+  return require('@embroider/compat').compatBuild(app, Webpack);
 };
