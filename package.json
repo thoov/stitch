@@ -32,6 +32,8 @@
     "@npmcli/arborist": "^2.6.0",
     "codemod-cli": "^3.2.0",
     "ejs": "^3.1.6",
+    "fs-extra": "^10.0.0",
+    "globby": "^11.0.3",
     "ora": "^5.4.0",
     "semver": "^7.3.5",
     "v8-compile-cache": "^2.3.0",

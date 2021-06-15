@@ -5,6 +5,8 @@
   "dependencies": {
     "@checkup/core": "^1.0.0-beta.10",
     "@npmcli/arborist": "^2.6.0",
+    "fs-extra": "^10.0.0",
+    "globby": "^11.0.3",
     "semver": "^7.3.5"
   },
   "devDependencies": {},
