@@ -48,8 +48,6 @@ export async function run(argv: string[] = process.argv.slice(2)): Promise<void>
             options: ['pretty', 'markdown'],
             default: 'markdown',
           },
-            default: 'markdown',
-          },
         });
       },
       handler: async (options: Options) => {
