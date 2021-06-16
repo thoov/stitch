@@ -1,5 +1,4 @@
 import '@microsoft/jest-sarif';
-import { readFileSync } from 'fs';
 import execa from 'execa';
 import { Project } from 'fixturify-project';
 
