@@ -1,4 +1,5 @@
 import '@microsoft/jest-sarif';
+import { readFileSync } from 'fs';
 import execa from 'execa';
 import { Project } from 'fixturify-project';
 
@@ -8,7 +9,10 @@ describe('cli-test', () => {
   let project: Project;
 
   beforeEach(function () {
-    project = new Project('fake-project', '0.0.1');
+    project = new Project('fake-project', '0.0.1', (p) => {
+      p.addDevDependency('@ember/test-waiters', '2.0.0');
+      p.addDevDependency('ember-cli-fastboot', '2.0.0');
+    });
     project.writeSync();
   });
 
@@ -37,11 +41,29 @@ describe('cli-test', () => {
     `);
   });
 
-  it('can invoke the preflight command', async () => {
+  it('can invoke the preflight command using the default markdown formatter', async () => {
     const result = await run(['preflight']);
 
     expect(result.exitCode).toEqual(0);
-    expect(JSON.parse(result.stdout)).toBeValidSarifLog();
+    expect(result.stdout).toMatch(
+      /Embroider preflight check written to .*\/embroider-preflight.md/
+    );
+  });
+
+  it('can invoke the preflight command using the pretty formatter', async () => {
+    const result = await run(['preflight', '--format', 'pretty']);
+    debugger;
+
+    expect(result.exitCode).toEqual(0);
+    expect(result.stdout).toMatchInlineSnapshot(`
+      "## Preflight Check Results
+
+      The following packages are not compatible with Embroider.
+      @ember/test-waiters
+        - fake-project
+      ember-cli-fastboot
+        - fake-project"
+    `);
   });
 
   it('can invoke the migrate command', async () => {

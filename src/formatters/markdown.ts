@@ -1,32 +1,32 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import * as ejs from 'ejs';
-import { FormatterArgs } from '@checkup/core';
 import type { Log } from 'sarif';
-
-type MarkdownFormatterArgs = Omit<FormatterArgs, 'format' | 'writer'>;
+import type { StitchFormatterArgs } from '../types/formatter';
 
 export default class MarkdownFormatter {
-  args: MarkdownFormatterArgs;
+  args: StitchFormatterArgs;
 
   private get template(): string {
-    return readFileSync(join(__dirname, 'templates', 'embroider-preflight.md.ejs'), {
+    return readFileSync(join(__dirname, '..', 'templates', 'embroider-preflight.md.ejs'), {
       encoding: 'utf-8',
     });
   }
 
-  constructor(args: MarkdownFormatterArgs) {
+  constructor(args: StitchFormatterArgs) {
     this.args = args;
   }
 
-  format(result: Log): void {
+  format(log: Log): void {
     const outputPath = join(this.args.cwd, 'embroider-preflight.md');
     const markdownReport = ejs.render(this.template, {
       projectName: 'Fake Project',
-      results: this.getResults(result),
+      results: this.getResults(log),
     });
 
     writeFileSync(outputPath, markdownReport);
+
+    process.stdout.write(`Embroider preflight check written to ${outputPath}`);
   }
 
   private getResults(result: Log) {
