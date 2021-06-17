@@ -51,7 +51,6 @@ describe('cli-test', () => {
 
   it('can invoke the preflight command using the pretty formatter', async () => {
     const result = await run(['preflight', '--format', 'pretty']);
-    debugger;
 
     expect(result.exitCode).toEqual(0);
     expect(result.stdout).toMatchInlineSnapshot(`
