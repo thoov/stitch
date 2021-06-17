@@ -4,5 +4,6 @@
   "ember-cli-eyeglass": ">=7.0.3",
   "ember-cli-fastboot": ">=2.2.3",
   "ember-holy-futuristic-template-namespacing-batman": ">=1.1.0",
-  "ember-math-helpers": ">=2.14.0"
+  "ember-math-helpers": ">=2.14.0",
+  "ember-engines": ">=0.8.16"
 }
