@@ -21,7 +21,7 @@
     "copy-files": "cp -R ./src/templates ./lib && cp -R src/codemods ./lib",
     "lint": "eslint . --cache --ext .ts",
     "prepare": "yarn build",
-    "test": "jest --runInBand --silent"
+    "test": "jest --runInBand"
   },
   "resolutions": {
     "resolve-package-path": "^4.0.0"
