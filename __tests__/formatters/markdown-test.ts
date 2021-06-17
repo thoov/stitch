@@ -1,8 +1,8 @@
 import { readJsonSync } from 'fs-extra';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { createTmpDir } from './__utils__/tmp-dir';
-import MarkdownFormatter from '../src/markdown-formatter';
+import { createTmpDir } from '../__utils__/tmp-dir';
+import MarkdownFormatter from '../../src/formatters/markdown';
 
 const ROOT = process.cwd();
 
@@ -22,7 +22,7 @@ describe('markdown-formatter-test', () => {
     const formatter = new MarkdownFormatter({
       cwd: tmp,
     });
-    const results = readJsonSync(join(__dirname, '__fixtures__', 'markdown-results.sarif'));
+    const results = readJsonSync(join(__dirname, '..', '__fixtures__', 'markdown-results.sarif'));
 
     // explicitly remove all results
     results.runs[0].results = [];
@@ -46,7 +46,7 @@ describe('markdown-formatter-test', () => {
     const formatter = new MarkdownFormatter({
       cwd: tmp,
     });
-    const results = readJsonSync(join(__dirname, '__fixtures__', 'markdown-results.sarif'));
+    const results = readJsonSync(join(__dirname, '..', '__fixtures__', 'markdown-results.sarif'));
 
     formatter.format(results);
 

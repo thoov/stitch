@@ -1,11 +1,14 @@
-import { CheckupTaskRunner, getFormatter } from '@checkup/cli';
-import { CONFIG_SCHEMA_URL, OutputFormat } from '@checkup/core';
+import { CheckupTaskRunner } from '@checkup/cli';
+import { CONFIG_SCHEMA_URL } from '@checkup/core';
 import ora from 'ora';
 import * as yargs from 'yargs';
+import MarkdownFormatter from './formatters/markdown';
+import PrettyFormatter from './formatters/pretty';
 
 interface StitchArguments {
   workingDirectory: string;
   fooBar: string;
+  format: 'pretty' | 'markdown';
 }
 
 type Options = StitchArguments & yargs.Arguments;
@@ -39,6 +42,12 @@ export async function run(argv: string[] = process.argv.slice(2)): Promise<void>
             describe: 'An example of threading arguments through to tasks',
             type: 'string',
           },
+          format: {
+            alias: 'f',
+            describe: 'The format stitch results will be outputed with.',
+            options: ['pretty', 'markdown'],
+            default: 'markdown',
+          },
         });
       },
       handler: async (options: Options) => {
@@ -65,11 +74,13 @@ export async function run(argv: string[] = process.argv.slice(2)): Promise<void>
         });
 
         const result = await taskRunner.run();
-
-        const formatter = getFormatter({
+        const formatterArgs = {
           cwd: options.workingDirectory,
-          format: OutputFormat.json,
-        });
+        };
+        const formatter =
+          options.format === 'markdown'
+            ? new MarkdownFormatter(formatterArgs)
+            : new PrettyFormatter(formatterArgs);
 
         spinner.stop();
         formatter.format(result);
