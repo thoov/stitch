@@ -20,9 +20,7 @@ module.exports = function (defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
-  const {
-    Webpack
-  } = require('@embroider/webpack');
+  const foo = ['foo', 'bar'];
 
-  return require('@embroider/compat').compatBuild(app, Webpack);
+  return app.toTree(foo);
 };

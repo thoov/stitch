@@ -44,13 +44,6 @@ describe('cli-test', () => {
     expect(JSON.parse(result.stdout)).toBeValidSarifLog();
   });
 
-  it('can invoke the migrate command', async () => {
-    const result = await run(['migrate']);
-
-    expect(result.exitCode).toEqual(0);
-    expect(result.stdout).toMatchInlineSnapshot(`"Migration commencing. Hold on to your hats."`);
-  });
-
   function run(args: string[], options: execa.Options = {}) {
     const defaults = {
       reject: false,
