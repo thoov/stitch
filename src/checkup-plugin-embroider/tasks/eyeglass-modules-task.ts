@@ -1,6 +1,8 @@
 import { BaseTask, Task } from '@checkup/core';
 import { Result } from 'sarif';
 import findBadEyeglassModules from '../helpers/find-bad-eyeglass-modules';
+import path from 'path';
+import fs from 'fs-extra';
 
 export default class EyeglassModulesCheck extends BaseTask implements Task {
   taskName = 'eyeglass-modules-check';
@@ -9,7 +11,13 @@ export default class EyeglassModulesCheck extends BaseTask implements Task {
   category = 'embroider';
 
   async run(): Promise<Result[]> {
-    const problematicAddons = await findBadEyeglassModules(this.context.options.cwd);
+    const pkgJson = await fs.readJson(path.join(this.context.options.cwd, 'package.json'));
+    let problematicAddons: string[] = [];
+
+    if (pkgJson.dependencies['ember-cli-eyeglass']) {
+      problematicAddons = await findBadEyeglassModules(this.context.options.cwd);
+    }
+
     const results = problematicAddons.map(addon => {
       return {
         message: {
