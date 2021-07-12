@@ -98,6 +98,51 @@ describe('eyeglass-modules-test', () => {
     expect(addonsFound).toStrictEqual(['foo', 'baz']);
   });
 
+  it('if finds nested incorrect eyeglass modules in nested in repo addons', async () => {
+    project.pkg['ember-addon'] = {};
+    (project.pkg['ember-addon'] as any).paths = [
+      'lib/foo',
+    ];
+
+    project.files = {
+      lib: {
+        foo: {
+          'package.json': `{ "name": "foo", "ember-addon": { "paths": ["lib/bar"] } }`,
+          app: {
+            styles: {
+              'index.scss': ''
+            }
+          },
+          lib: {
+            bar: {
+              'package.json': `{ "name": "bar", "ember-addon": { "paths": ["lib/baz"] } }`,
+              addon: {
+                styles: {
+                  'index.scss': ''
+                }
+              },
+              lib: {
+                baz: {
+                  'package.json': `{ "name": "baz" }`,
+                  app: {
+                    styles: {
+                      'index.scss': ''
+                    }
+                  }
+                }
+              }
+            },
+          }
+        },
+      }
+    }
+
+    project.writeSync();
+
+    const addonsFound = await findBadEyeglassModules(project.baseDir);
+    expect(addonsFound).toStrictEqual(['foo', 'baz']);
+  });
+
   it('if finds incorrect eyeglass modules if index.scss is not found', async () => {
     project.pkg['ember-addon'] = {};
     (project.pkg['ember-addon'] as any).paths = [
